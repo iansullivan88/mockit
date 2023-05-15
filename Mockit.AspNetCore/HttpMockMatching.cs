@@ -2,7 +2,7 @@
 {
     public class HttpMockMatching
     {
-        public HttpMockMatching(bool enabled, HttpMethod method, string host, string path)
+        public HttpMockMatching(bool enabled, string method, string host, string path)
         {
             Enabled = enabled;
             Method = method;
@@ -12,7 +12,7 @@
 
         public bool Enabled { get; }
 
-        public HttpMethod Method { get; }
+        public string Method { get; }
         
         public string Host { get; }
 

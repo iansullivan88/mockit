@@ -2,6 +2,8 @@
 {
     public interface IMockMatcher
     {
-        public HttpMock GetMatchingMock(HttpRequestMessage request);
+        public HttpMock? GetMatchingMock(HttpRequestMessage request);
+
+        public void Rebuild(ICollection<HttpMock> mocks);
     }
 }

@@ -1,17 +1,17 @@
-﻿using System;
-
-namespace Mockit.AspNetCore
+﻿namespace Mockit.AspNetCore
 {
     public sealed class HttpMock
     {
         public HttpMock(
             Guid id,
             HttpMockMatching matching,
-            HttpMockResponse response) 
+            HttpMockResponse response,
+            DateTime lastModified) 
         {
             Id = id;
             Matching = matching;
             Response = response;
+            LastModified = lastModified;
         }
 
         public Guid Id { get; }
@@ -20,36 +20,6 @@ namespace Mockit.AspNetCore
 
         public HttpMockResponse Response { get; }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || !(obj is HttpMock objMock))
-            {
-                return false;
-            }
-
-            return Id == objMock.Id;
-        }
-
-        public static bool operator ==(HttpMock left, HttpMock right)
-        {
-            if (ReferenceEquals(left, right))
-            {
-                return true;
-            }
-
-            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
-            {
-                return false;
-            }
-
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(HttpMock left, HttpMock right)
-        {
-            return !(left == right);
-        }
-
-        public override int GetHashCode() => Id.GetHashCode();
+        public DateTime LastModified { get; }
     }
 }
