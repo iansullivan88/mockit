@@ -4,14 +4,14 @@ namespace Mockit.AspNetCore
 {
     public class HttpMockResponse
     {
-        public HttpMockResponse(HttpStatusCode statusCode, Dictionary<string, string> headers, byte[] content)
+        public HttpMockResponse(int statusCode, Dictionary<string, string> headers, byte[] content)
         {
             this.StatusCode = statusCode;
             this.Headers = headers;
             this.Content = content;
         }
 
-        public HttpStatusCode StatusCode { get; }
+        public int StatusCode { get; }
 
         public Dictionary<string, string> Headers { get; }
 

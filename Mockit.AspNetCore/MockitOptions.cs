@@ -2,6 +2,6 @@
 {
     public class MockitOptions
     {
-        public TimeSpan RefreshTime { get; set; } = TimeSpan.FromMinutes(1);
+        public TimeSpan? RefreshTime { get; set; } = null;
     }
 }

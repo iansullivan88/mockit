@@ -1,31 +1,35 @@
-using System.Net.Http;
+using Mockit.AspNetCore;
+using System;
+using System.Text;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient();
+builder.Services.AddMockit();
+
+builder.Services
+    .AddHttpClient(string.Empty)
+    .AddHttpMessageHandler<MockitDelegatingHandler>();
 
 var app = builder.Build();
 
+var manager = app.Services.GetRequiredService<IMockitManager>();
+manager.SaveMockAsync(new HttpMock(
+    id: Guid.NewGuid(),
+    matching: new HttpMockMatching(
+        enabled: false,
+        method: "GET",
+        host: "worldtimeapi.org",
+        path: "/api/timezone/America/New_York"),
+    response: new HttpMockResponse(
+        statusCode: 200,
+        headers: new Dictionary<string, string>(),
+        content: Encoding.UTF8.GetBytes("{\"datetime\":\"2023-03-12T10:00:00\"}")),
+    lastModified: DateTime.UtcNow));
+
 app.MapGet("/global-times", async (HttpClient httpClient) =>
 {
-    var nyTime = await GetTime(httpClient, "America/New_York");
-    var londonTime = await GetTime(httpClient, "Europe/London");
-    var tokyoTime = await GetTime(httpClient, "Asia/Tokyo");
-
-    return new
-    {
-        newYork = new { nyTime.dateTime, nyTime.timezone },
-        london = new { londonTime.dateTime, londonTime.timezone },
-        tokyo = new { tokyoTime.dateTime, tokyoTime.timezone }
-    };
-});
-
-app.Run();
-
-static async Task<(string timezone, string dateTime)> GetTime(HttpClient httpClient, string timezone)
-{
-    var response = await httpClient.GetAsync($"https://worldtimeapi.org/api/timezone/{timezone}");
+    var response = await httpClient.GetAsync($"https://worldtimeapi.org/api/timezone/America/New_York");
     response.EnsureSuccessStatusCode();
 
     using var responseStream = await response.Content.ReadAsStreamAsync();
@@ -33,8 +37,10 @@ static async Task<(string timezone, string dateTime)> GetTime(HttpClient httpCli
 
     var rootElement = jsonDocument.RootElement;
 
-    return (
-        timezone: rootElement.GetProperty("timezone").GetString()!,
-        dateTime: rootElement.GetProperty("datetime").GetString()!
-    );
-}
+    return new
+    {
+        dateTime = rootElement.GetProperty("datetime").GetString()!
+    };
+});
+
+app.Run();

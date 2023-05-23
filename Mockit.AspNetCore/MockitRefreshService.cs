@@ -17,7 +17,10 @@ namespace Mockit.AspNetCore
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer.Change(0, (int)_options.RefreshTime.TotalMilliseconds);
+            if (_options.RefreshTime != null)
+            {
+                _timer.Change(0, (int)_options.RefreshTime.Value.TotalMilliseconds);
+            }
 
             return Task.CompletedTask;
         }

@@ -23,7 +23,7 @@ namespace Mockit.AspNetCore
 
             // build a mocked response
             var response = new HttpResponseMessage();
-            response.StatusCode = mock.Response.StatusCode;
+            response.StatusCode = (HttpStatusCode)mock.Response.StatusCode;
             foreach(var header in mock.Response.Headers)
             {
                 response.Headers.Add(header.Key, header.Value);

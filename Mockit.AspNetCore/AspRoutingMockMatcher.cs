@@ -16,15 +16,18 @@ namespace Mockit.AspNetCore
 
         private static readonly DefaultInlineConstraintResolver ConstraintResolver;
 
+        private static readonly ServiceProvider RoutingServiceProvider;
+
         private RouteCollection _routeCollection = new RouteCollection();
 
 
         static AspRoutingMockMatcher()
         {
             var services = new ServiceCollection();
-            var serviceProvider = services.BuildServiceProvider();
+            services.AddLogging();
 
-            ConstraintResolver = new DefaultInlineConstraintResolver(Options.Create(new RouteOptions()), serviceProvider);
+            RoutingServiceProvider = services.BuildServiceProvider();
+            ConstraintResolver = new DefaultInlineConstraintResolver(Options.Create(new RouteOptions()), RoutingServiceProvider);
         }
 
         public AspRoutingMockMatcher()
@@ -42,12 +45,13 @@ namespace Mockit.AspNetCore
             mockHttpContext.Request.Method = request.Method.ToString();
             mockHttpContext.Request.Host = new HostString(request.RequestUri.Host);
             mockHttpContext.Request.Path = request.RequestUri.AbsolutePath;
+            mockHttpContext.RequestServices = RoutingServiceProvider;
 
             var routeContext = new RouteContext(mockHttpContext);
 
             _routeCollection.RouteAsync(routeContext).Wait();
 
-            return routeContext.RouteData.Values[MockRouteDataKey] as HttpMock;
+            return routeContext.RouteData.DataTokens[MockRouteDataKey] as HttpMock;
         }
 
         public void Rebuild(ICollection<HttpMock> mocks)

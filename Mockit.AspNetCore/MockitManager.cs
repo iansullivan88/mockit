@@ -1,6 +1,6 @@
 ﻿namespace Mockit.AspNetCore
 {
-    public class MockitManager
+    public class MockitManager : IMockitManager
     {
         private readonly IMockitStore _store;
         private readonly IMockMatcher _matcher;
@@ -31,7 +31,10 @@
             var latestMocks = await _store.GetMocksAsync();
             lock (_mocks)
             {
-                if (latestMocks.Max(m => m.LastModified) > _mocks.Max(m => m.LastModified))
+                var latestMocksModified = latestMocks.Any() ? latestMocks.Max(m => m.LastModified) : DateTime.MinValue;
+                var mocksModified = _mocks.Any() ? _mocks.Max(m => m.LastModified) : DateTime.MinValue;
+
+                if (mocksModified != latestMocksModified)
                 {
                     _matcher.Rebuild(latestMocks);
                     _mocks = latestMocks;
