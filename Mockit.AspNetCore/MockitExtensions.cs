@@ -14,8 +14,8 @@ namespace Mockit.AspNetCore
             services.TryAddSingleton<IMockitManager, MockitManager>();
             services.TryAddSingleton<IMockitStore, InMemoryMockitStore>();
             services.TryAddSingleton<IMockMatcher, AspRoutingMockMatcher>();
-            services.TryAddSingleton<MockitDelegatingHandler>();
             services.TryAddSingleton<MockitOptions>();
+            services.TryAddTransient<MockitDelegatingHandler>();
 
             services.AddHostedService<MockitRefreshService>();
 

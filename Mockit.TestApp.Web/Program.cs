@@ -1,46 +1,30 @@
 using Mockit.AspNetCore;
-using System;
 using System.Text;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMockit();
+builder.Services.AddControllers();
 
 builder.Services
     .AddHttpClient(string.Empty)
     .AddHttpMessageHandler<MockitDelegatingHandler>();
 
 var app = builder.Build();
+app.MapControllers();
 
 var manager = app.Services.GetRequiredService<IMockitManager>();
 manager.SaveMockAsync(new HttpMock(
     id: Guid.NewGuid(),
     matching: new HttpMockMatching(
-        enabled: false,
+        enabled: true,
         method: "GET",
-        host: "worldtimeapi.org",
-        path: "/api/timezone/America/New_York"),
+        host: "wttr.in",
+        path: "/phoenix"),
     response: new HttpMockResponse(
         statusCode: 200,
         headers: new Dictionary<string, string>(),
-        content: Encoding.UTF8.GetBytes("{\"datetime\":\"2023-03-12T10:00:00\"}")),
+        content: Encoding.UTF8.GetBytes("{ \"current_condition\": [ { \"precipMM\": \"1.0\", \"windspeedMiles\": \"4\" } ] }")),
     lastModified: DateTime.UtcNow));
-
-app.MapGet("/global-times", async (HttpClient httpClient) =>
-{
-    var response = await httpClient.GetAsync($"https://worldtimeapi.org/api/timezone/America/New_York");
-    response.EnsureSuccessStatusCode();
-
-    using var responseStream = await response.Content.ReadAsStreamAsync();
-    var jsonDocument = await JsonDocument.ParseAsync(responseStream);
-
-    var rootElement = jsonDocument.RootElement;
-
-    return new
-    {
-        dateTime = rootElement.GetProperty("datetime").GetString()!
-    };
-});
 
 app.Run();

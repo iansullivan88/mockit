@@ -13,7 +13,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "global-times",
+      "launchUrl": "api/weather/phoenix",
       "applicationUrl": "http://localhost:5299",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -22,7 +22,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "global-times",
+      "launchUrl": "api/weather/phoenix",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
