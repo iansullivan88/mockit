@@ -11,6 +11,9 @@ builder.Services
     .AddHttpMessageHandler<MockitDelegatingHandler>();
 
 var app = builder.Build();
+
+app.UseMockitUi();
+
 app.MapControllers();
 
 var manager = app.Services.GetRequiredService<IMockitManager>();

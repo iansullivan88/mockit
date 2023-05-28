@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Mockit.AspNetCore
@@ -14,12 +15,17 @@ namespace Mockit.AspNetCore
             services.TryAddSingleton<IMockitManager, MockitManager>();
             services.TryAddSingleton<IMockitStore, InMemoryMockitStore>();
             services.TryAddSingleton<IMockMatcher, AspRoutingMockMatcher>();
-            services.TryAddSingleton<MockitOptions>();
+            services.TryAddSingleton(options);
             services.TryAddTransient<MockitDelegatingHandler>();
 
             services.AddHostedService<MockitRefreshService>();
 
             return services;
+        }
+
+        public static IApplicationBuilder UseMockitUi(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<MockitUiMiddleware>();
         }
     }
 }
