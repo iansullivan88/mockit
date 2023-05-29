@@ -5,15 +5,8 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
+using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Mockit.AspNetCore
 {
@@ -21,15 +14,18 @@ namespace Mockit.AspNetCore
     {
         private readonly RequestDelegate _next;
         private readonly MockitOptions _options;
+        private readonly IMockitManager _mockitManager;
         private readonly StaticFileMiddleware _staticMiddleware;
 
         public MockitUiMiddleware(
             RequestDelegate next,
+            IMockitManager mockitManager,
+            MockitOptions options,
             IWebHostEnvironment hostingEnv,
-            ILoggerFactory loggerFactory,
-            MockitOptions options)
+            ILoggerFactory loggerFactory)
         {
             _next = next;
+            _mockitManager = mockitManager;
             _options = options;
 
             var staticFileOptions = new StaticFileOptions
@@ -51,7 +47,17 @@ namespace Mockit.AspNetCore
                 return;
             }
 
-            await _staticMiddleware.Invoke(context);
+            if (context.Request.Method == "GET" && path == $"{_options.UiPrefix}/mocks")
+            {
+                var mocks = _mockitManager.GetMocks();
+                var entities = mocks.Select(HttpMock.ToEntity);
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
+                await context.Response.WriteAsJsonAsync(entities);
+            }
+            else
+            {
+                await _staticMiddleware.Invoke(context);
+            }
         }
     }
 }
