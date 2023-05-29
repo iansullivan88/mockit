@@ -1,20 +1,18 @@
-﻿using System.Net;
-
-namespace Mockit.AspNetCore
+﻿namespace Mockit.AspNetCore
 {
     public class HttpMockResponse
     {
-        public HttpMockResponse(int statusCode, Dictionary<string, string> headers, byte[] content)
+        public HttpMockResponse(int statusCode, Dictionary<string, string> headers, byte[]? content)
         {
-            this.StatusCode = statusCode;
-            this.Headers = headers;
-            this.Content = content;
+            StatusCode = statusCode;
+            Headers = headers;
+            Content = content;
         }
 
         public int StatusCode { get; }
 
         public Dictionary<string, string> Headers { get; }
 
-        public byte[] Content { get; }
+        public byte[]? Content { get; }
     }
 }

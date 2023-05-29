@@ -34,7 +34,7 @@ namespace Mockit.AspNetCore
 
         private async void TimerEvent(object? state)
         {
-            await _manager.RefreshMocksAsync();
+            await _manager.RefreshMocksIfRequiredAsync();
         }
     }
 }

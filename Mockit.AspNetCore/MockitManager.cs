@@ -22,23 +22,35 @@
 
         public async Task SaveMockAsync(HttpMock mock)
         {
-            await _store.SaveMockAsync(mock);
+            var entity = HttpMock.ToEntity(mock);
+            await _store.SaveMockAsync(entity);
             await RefreshMocksAsync();
+        }
+
+        public async Task RefreshMocksIfRequiredAsync()
+        {
+            var mocks = _mocks;
+            var lastModified = mocks.Any() ? (DateTime?)mocks.Max(m => m.LastModified) : null;
+            
+            var isRequired = await _store.IsRefreshRequired(_mocks.Count, lastModified);
+            
+            if (isRequired)
+            {
+                await RefreshMocksAsync();
+            }
         }
 
         public async Task RefreshMocksAsync()
         {
-            var latestMocks = await _store.GetMocksAsync();
+            var entities = await _store.GetMocksAsync();
             lock (_mocks)
             {
-                var latestMocksModified = latestMocks.Any() ? latestMocks.Max(m => m.LastModified) : DateTime.MinValue;
-                var mocksModified = _mocks.Any() ? _mocks.Max(m => m.LastModified) : DateTime.MinValue;
+                var mocks = entities
+                    .Select(HttpMock.FromEntity)
+                    .ToList();
 
-                if (mocksModified != latestMocksModified)
-                {
-                    _matcher.Rebuild(latestMocks);
-                    _mocks = latestMocks;
-                }
+                _matcher.Rebuild(mocks);
+                _mocks = mocks;
             }
         }
     }

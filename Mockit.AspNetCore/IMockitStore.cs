@@ -2,8 +2,10 @@
 {
     public interface IMockitStore
     {
-        Task<ICollection<HttpMock>> GetMocksAsync();
+        Task<ICollection<HttpMockEntity>> GetMocksAsync();
 
-        Task SaveMockAsync(HttpMock mock);
+        Task SaveMockAsync(HttpMockEntity mock);
+
+        Task<bool> IsRefreshRequired(int currentMockCount, DateTime? currentLastModified);
     }
 }

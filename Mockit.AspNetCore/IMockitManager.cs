@@ -7,5 +7,7 @@
         Task SaveMockAsync(HttpMock mock);
 
         Task RefreshMocksAsync();
+
+        Task RefreshMocksIfRequiredAsync();
     }
 }
