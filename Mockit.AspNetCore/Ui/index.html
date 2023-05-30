@@ -7,14 +7,23 @@
     <title>Mockit</title>
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.1/dist/cdn.min.js"></script>
 </head>
 <body>
+    <main x-data>
+        <ol>
+            <template x-for="mock in $store.mocks.mocks">
+                <li>
+                    <span x-text="mock.method"></span>
+                    <span x-text="mock.host"></span>
+                    <span x-text="mock.path"></span>
+                </li>
+            </template>
+        </ol>
+    </main>
 
-    <div>
-        {{ message }}
-    </div>
+    <script src="index.js"></script>
 
-    <script src="index.js" type="module"></script>
 </body>
 </html>
 

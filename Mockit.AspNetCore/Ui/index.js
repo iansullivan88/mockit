@@ -1,5 +1,13 @@
-import { createApp } from 'https://unpkg.com/petite-vue@0.2.2/dist/petite-vue.es.js'
+async function reloadMocks() {
+    const response = await fetch("mocks");
+    const latestMocks = await response.json();
+    Alpine.store("mocks").mocks = latestMocks;
+}
 
-createApp({
-    message: "Mockit app in progress",
-}).mount()
+document.addEventListener('alpine:init', () => {
+    Alpine.store('mocks', {
+        mocks: []
+    });
+})
+
+reloadMocks();
