@@ -1,3 +1,26 @@
 body {
     font-family: sans-serif;
 }
+
+.animated-dialog {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.animated-dialog[open] {
+    opacity: 1;
+    pointer-events: inherit;
+}
+
+.animated-dialog::backdrop {
+    background-color: rgba(0,0,255, 0.2);
+}
+
+#mock-dialog label {
+    display: block;
+}

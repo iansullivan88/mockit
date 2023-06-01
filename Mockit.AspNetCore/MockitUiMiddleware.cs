@@ -7,11 +7,17 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Reflection;
+using System.Text.Json;
 
 namespace Mockit.AspNetCore
 {
     public class MockitUiMiddleware
     {
+        private readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         private readonly RequestDelegate _next;
         private readonly MockitOptions _options;
         private readonly IMockitManager _mockitManager;
@@ -53,6 +59,14 @@ namespace Mockit.AspNetCore
                 var entities = mocks.Select(HttpMock.ToEntity);
                 context.Response.StatusCode = (int)HttpStatusCode.OK;
                 await context.Response.WriteAsJsonAsync(entities);
+            }
+            else if (context.Request.Method == "PUT" && path == $"{_options.UiPrefix}/mocks")
+            {
+                var mockEntity = await JsonSerializer.DeserializeAsync<HttpMockEntity>(context.Request.Body, JsonOptions);
+                mockEntity = mockEntity! with { LastModified = DateTime.UtcNow };
+                var mock = HttpMock.FromEntity(mockEntity!);
+                await _mockitManager.SaveMockAsync(mock);
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
             }
             else
             {

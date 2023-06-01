@@ -10,17 +10,61 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.1/dist/cdn.min.js"></script>
 </head>
 <body>
-    <main x-data>
-        <ol>
+    <main>
+        <ol x-data>
             <template x-for="mock in $store.mocks.mocks">
-                <li>
-                    <span x-text="mock.method"></span>
-                    <span x-text="mock.host"></span>
-                    <span x-text="mock.path"></span>
+                <li class="mock" @click="$store.mocks.mockClicked">
+                    <div class="method" x-text="mock.method"></div>
+                    <div class="url" x-text="mock.host + mock.path"></div>
                 </li>
             </template>
         </ol>
     </main>
+
+    <dialog id="mock-dialog" class="animated-dialog" x-data="{mock: $store.mocks.editMock}">
+        <form method="dialog">
+            <div id="matching">
+                <label for="method">method:</label>
+                <select name="method" id="method" x-model="mock.method">
+                    <option>GET</option>
+                    <option>POST</option>
+                    <option>PUT</option>
+                    <option>PATCH</option>
+                    <option>DELETE</option>
+                    <option>CONNECT</option>
+                    <option>HEAD</option>
+                    <option>OPTIONS</option>
+                    <option>TRACE</option>
+                </select>
+
+                <label for="host">host:</label>
+                <input type="text" id="host" x-model="mock.host" />
+
+                <label for="path">path:</label>
+                <input type="text" id="path" x-model="mock.path" />
+            </div>
+
+            <div id="response">
+                <label for="responseStatusCode">status code:</label>
+                <input type="number" id="responseStatusCode" min="100" max="599" x-model="mock.responseStatusCode" />
+
+                <label for="responseText">content:</label>
+                <textarea id="responseText" x-model="mock.responseText"></textarea>
+
+                <label>headers:</label>
+                <fieldset>
+                    <template x-for="header in mock.responseHeaders">
+                        <div>
+                            <input type="text" x-model="header.name" />
+                            <input type="text" x-model="header.value" />
+                        </div>
+                    </template>
+                </fieldset>
+            </div>
+
+            <button @click="saveMockClicked">Save</button>
+        </form>
+    </dialog>
 
     <script src="index.js"></script>
 

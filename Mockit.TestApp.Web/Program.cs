@@ -27,21 +27,12 @@ await manager.SaveMockAsync(new HttpMock(
         path: "/phoenix"),
     response: new HttpMockResponse(
         statusCode: 200,
-        headers: new Dictionary<string, string>(),
-        content: Encoding.UTF8.GetBytes("{ \"current_condition\": [ { \"precipMM\": \"1.0\", \"windspeedMiles\": \"4\" } ] }")),
-    lastModified: DateTime.UtcNow));
-
-await manager.SaveMockAsync(new HttpMock(
-    id: Guid.NewGuid(),
-    matching: new HttpMockMatching(
-        enabled: true,
-        method: "GET",
-        host: "wttr.in",
-        path: "/{city}"),
-    response: new HttpMockResponse(
-        statusCode: 200,
-        headers: new Dictionary<string, string>(),
-        content: Encoding.UTF8.GetBytes("{ \"current_condition\": [ { \"precipMM\": \"1.0\", \"windspeedMiles\": \"4\" } ] }")),
+        headers: new List<HttpMockHeader>
+        {
+            new HttpMockHeader(Name: "header-1", Value: "value-1"),
+            new HttpMockHeader(Name: "header-2", Value: "value-2")
+        },
+        content: Encoding.UTF8.GetBytes("{ \"current_condition\": [ { \"precipMM\": \"0.0\", \"windspeedMiles\": \"4\" } ] }")),
     lastModified: DateTime.UtcNow));
 
 app.Run();
