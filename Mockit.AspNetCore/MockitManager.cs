@@ -5,7 +5,7 @@
         private readonly IMockitStore _store;
         private readonly IMockMatcher _matcher;
 
-        private ICollection<HttpMock> _mocks = new List<HttpMock>();
+        private List<HttpMock> _mocks = new List<HttpMock>();
         
         public MockitManager(
             IMockitStore store,
@@ -15,7 +15,7 @@
             _matcher = matcher;
         }
 
-        public ICollection<HttpMock> GetMocks()
+        public List<HttpMock> GetMocks()
         {
             return _mocks;
         }
@@ -47,6 +47,9 @@
             {
                 var mocks = entities
                     .Select(HttpMock.FromEntity)
+                    .OrderBy(m => m.Matching.Host)
+                        .ThenBy(m => m.Matching.Path)
+                        .ThenBy(m => m.Matching.Method)
                     .ToList();
 
                 _matcher.Rebuild(mocks);

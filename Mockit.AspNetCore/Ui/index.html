@@ -10,10 +10,13 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.1/dist/cdn.min.js"></script>
 </head>
 <body>
+    <header>
+        Mockit
+    </header>
     <main>
         <ol x-data>
             <template x-for="mock in $store.mocks.mocks">
-                <li class="mock" @click="$store.mocks.mockClicked">
+                <li :class="'mock ' + mock.method.toLowerCase() + (mock.enabled ? '' : ' disabled')" @click="$store.mocks.mockClicked">
                     <div class="method" x-text="mock.method"></div>
                     <div class="url" x-text="mock.host + mock.path"></div>
                 </li>
@@ -24,6 +27,9 @@
     <dialog id="mock-dialog" class="animated-dialog" x-data="{mock: $store.mocks.editMock}">
         <form method="dialog">
             <div id="matching">
+                <label for="enabled">enabled:</label>
+                <input type="checkbox" id="enabled" x-model="mock.enabled" />
+
                 <label for="method">method:</label>
                 <select name="method" id="method" x-model="mock.method">
                     <option>GET</option>
@@ -31,10 +37,8 @@
                     <option>PUT</option>
                     <option>PATCH</option>
                     <option>DELETE</option>
-                    <option>CONNECT</option>
                     <option>HEAD</option>
                     <option>OPTIONS</option>
-                    <option>TRACE</option>
                 </select>
 
                 <label for="host">host:</label>
@@ -63,6 +67,7 @@
             </div>
 
             <button @click="saveMockClicked">Save</button>
+            <button @click="closeMockClicked">Close</button>
         </form>
     </dialog>
 

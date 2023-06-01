@@ -53,6 +53,10 @@ async function saveMockClicked() {
     dialog.close();
 }
 
+function closeMockClicked() {
+    dialog.close();
+}
+
 function cloneHeaders(headers) {
     const newHeaders = [];
     for (header of headers) {

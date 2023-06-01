@@ -2,7 +2,7 @@
 {
     public interface IMockitManager
     {
-        ICollection<HttpMock> GetMocks();
+        List<HttpMock> GetMocks();
 
         Task SaveMockAsync(HttpMock mock);
 

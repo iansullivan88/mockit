@@ -2,6 +2,110 @@ body {
     font-family: sans-serif;
 }
 
+header {
+    box-sizing: border-box;
+    background-color: #000;
+    color: #fff;
+    padding: 20px 20px;
+    font-size: 2em;
+}
+
+main {
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 1460px;
+    padding: 0 20px;
+    width: 100%;
+}
+
+li.mock {
+    border-style: solid;
+    border-width: 1px;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 3px rgba(0,0,0,.19);
+    margin: 15px 0;
+}
+
+li.mock .method {
+    display: inline-block;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 80px;
+    padding: 6px 0;
+    text-align: center;
+}
+
+
+li.mock .url {
+    display: inline-block;
+    color: #3b4151;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0 10px;
+    word-break: break-word;
+}
+
+li.mock.get {
+    background: rgba(97,175,254,.1);
+    border-color: #61affe;
+}
+
+li.mock.post {
+    background: rgba(73,204,144,.1);
+    border-color: #49cc90;
+}
+
+li.mock.put {
+    background: rgba(252,161,48,.1);
+    border-color: #fca130;
+}
+
+li.mock.patch {
+    background: rgba(80,227,194,.1);
+    border-color: #50e3c2;
+}
+
+li.mock.delete {
+    background: rgba(249,62,62,.1);
+    border-color: #f93e3e;
+}
+
+li.mock.head {
+    background: rgba(144,18,254,.1);
+    border-color: #9012fe;
+}
+
+li.mock.options {
+    background: rgba(13,90,167,.1);
+    border-color: #0d5aa7;
+}
+
+li.mock.disabled {
+    background: hsla(0,0%,92%,.1);
+    border-color: #ebebeb;
+    opacity: .6;
+}
+
+li.mock.get .method { background-color: #61affe; }
+li.mock.post .method { background-color: #49cc90; }
+li.mock.put .method { background-color: #fca130; }
+li.mock.patch .method { background-color: #50e3c2; }
+li.mock.delete .method { background-color: #f93e3e; }
+li.mock.head .method { background-color: #9012fe; }
+li.mock.options .method { background-color: #0d5aa7; }
+li.mock.disabled .method { background-color: #ebebeb; }
+
+li.mock.disabled .url {
+    text-decoration: line-through;
+}
+
 .animated-dialog {
     pointer-events: none;
     opacity: 0;
