@@ -2,7 +2,7 @@
 {
     public class HttpMockResponse
     {
-        public HttpMockResponse(int statusCode, Dictionary<string, string> headers, byte[]? content)
+        public HttpMockResponse(int statusCode, List<HttpMockHeader> headers, byte[]? content)
         {
             StatusCode = statusCode;
             Headers = headers;
@@ -11,7 +11,7 @@
 
         public int StatusCode { get; }
 
-        public Dictionary<string, string> Headers { get; }
+        public List<HttpMockHeader> Headers { get; }
 
         public byte[]? Content { get; }
     }

@@ -24,11 +24,16 @@ namespace Mockit.AspNetCore
             // build a mocked response
             var response = new HttpResponseMessage();
             response.StatusCode = (HttpStatusCode)mock.Response.StatusCode;
+            
             foreach(var header in mock.Response.Headers)
             {
-                response.Headers.Add(header.Key, header.Value);
+                response.Headers.Add(header.Name, header.Value);
             }
-            response.Content = new ByteArrayContent(mock.Response.Content);
+
+            if (mock.Response.Content != null)
+            {
+                response.Content = new ByteArrayContent(mock.Response.Content);
+            }
 
             return Task.FromResult(response);
         }

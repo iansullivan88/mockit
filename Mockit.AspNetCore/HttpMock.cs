@@ -33,10 +33,10 @@
                 Host: mock.Matching.Host,
                 Path: mock.Matching.Path,
                 ResponseStatusCode: mock.Response.StatusCode,
-                ResponseHeaders: mock.Response.Headers,
                 ResponseContentBase64: mock.Response.Content == null
                     ? null
-                    : Convert.ToBase64String(mock.Response.Content)
+                    : Convert.ToBase64String(mock.Response.Content),
+                ResponseHeaders: mock.Response.Headers
             );
         }
 

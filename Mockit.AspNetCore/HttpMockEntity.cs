@@ -11,8 +11,8 @@
         string Host,
         string Path,
         int ResponseStatusCode,
-        Dictionary<string, string> ResponseHeaders,
-        string? ResponseContentBase64)
+        string? ResponseContentBase64,
+        List<HttpMockHeader> ResponseHeaders)
     {
     }
 }
