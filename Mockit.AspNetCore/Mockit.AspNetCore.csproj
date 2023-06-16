@@ -9,14 +9,12 @@
   <ItemGroup>
     <None Remove="Ui\index.html" />
     <None Remove="Ui\index.js" />
-    <None Remove="Ui\reset.css" />
     <None Remove="Ui\style.css" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Ui\index.html" />
     <EmbeddedResource Include="Ui\index.js" />
-    <EmbeddedResource Include="Ui\reset.css" />
     <EmbeddedResource Include="Ui\style.css" />
   </ItemGroup>
 

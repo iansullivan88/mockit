@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mockit</title>
-    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.1/dist/cdn.min.js"></script>
 </head>
@@ -25,49 +25,70 @@
     </main>
 
     <dialog id="mock-dialog" class="animated-dialog" x-data="{mock: $store.mocks.editMock}">
-        <form method="dialog">
-            <div id="matching">
-                <label for="enabled">enabled:</label>
-                <input type="checkbox" id="enabled" x-model="mock.enabled" />
+        <form method="dialog" class="pure-form">
+            <fieldset>
+                <legend>Matching</legend>
+                <div class="pure-g">
+                    <div class="pure-u-1-4 padded-cell">
+                        <label for="enabled">Enabled</label>
+                        <input type="checkbox" id="enabled" x-model="mock.enabled" />
+                    </div>
+                </div>
+                <div class="pure-g">
+                    <div class="pure-u-1-4 padded-cell">
+                        <label for="method">Method</label>
+                        <select class="pure-u-1" name="method" id="method" x-model="mock.method">
+                            <option>GET</option>
+                            <option>POST</option>
+                            <option>PUT</option>
+                            <option>PATCH</option>
+                            <option>DELETE</option>
+                            <option>HEAD</option>
+                            <option>OPTIONS</option>
+                        </select>
+                    </div>
+                    <div class="pure-u-1-4 padded-cell">
+                        <label for="host">Host</label>
+                        <input class="pure-u-1" type="text" id="host" x-model="mock.host" />
+                    </div>
+                    <div class="pure-u-1-4 padded-cell">
+                        <label for="path">Path</label>
+                        <input class="pure-u-1" type="text" id="path" x-model="mock.path" />
+                    </div>
+                </div>
+            </fieldset>
 
-                <label for="method">method:</label>
-                <select name="method" id="method" x-model="mock.method">
-                    <option>GET</option>
-                    <option>POST</option>
-                    <option>PUT</option>
-                    <option>PATCH</option>
-                    <option>DELETE</option>
-                    <option>HEAD</option>
-                    <option>OPTIONS</option>
-                </select>
+            <fieldset>
+                <legend>Response</legend>
+                <div class="pure-g">
+                    <div class="pure-u-1-1 padded-cell">
+                        <label for="responseStatusCode">Status Code</label>
+                        <input class="pure-u-1-8" type="number" id="responseStatusCode" min="100" max="599" x-model="mock.responseStatusCode" />
+                    </div>
+                    <div class="pure-u-1-1">
+                        <label>Headers</label>
+                        <template x-for="header in mock.responseHeaders">
+                            <div class="pure-g padded-cell">
+                                <div class="pure-u-1-2">
+                                    <div class="pure-g">
+                                        <input class="pure-u-1-2" type="text" x-model="header.name" />
+                                        <input class="pure-u-1-2" type="text" x-model="header.value" />
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="pure-u-1-1 padded-cell">
+                        <label for="responseText">Content</label>
+                        <textarea id="responseText" x-model="mock.responseText"></textarea>
+                    </div>
+                </div>
+            </fieldset>
 
-                <label for="host">host:</label>
-                <input type="text" id="host" x-model="mock.host" />
-
-                <label for="path">path:</label>
-                <input type="text" id="path" x-model="mock.path" />
-            </div>
-
-            <div id="response">
-                <label for="responseStatusCode">status code:</label>
-                <input type="number" id="responseStatusCode" min="100" max="599" x-model="mock.responseStatusCode" />
-
-                <label for="responseText">content:</label>
-                <textarea id="responseText" x-model="mock.responseText"></textarea>
-
-                <label>headers:</label>
-                <fieldset>
-                    <template x-for="header in mock.responseHeaders">
-                        <div>
-                            <input type="text" x-model="header.name" />
-                            <input type="text" x-model="header.value" />
-                        </div>
-                    </template>
-                </fieldset>
-            </div>
-
-            <button @click="saveMockClicked">Save</button>
-            <button @click="closeMockClicked">Close</button>
+            <fieldset>
+                <button type="button" class="pure-button" @click="closeMockClicked">Close</button>
+                <button type="submit" class="pure-button pure-button-primary" @click="saveMockClicked">Save</button>
+            </fieldset>
         </form>
     </dialog>
 

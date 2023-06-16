@@ -110,10 +110,8 @@ li.mock.disabled .url {
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.5s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    max-height: 90vh;
+    border: 1px solid #eee;
 }
 
 .animated-dialog[open] {
@@ -127,4 +125,19 @@ li.mock.disabled .url {
 
 #mock-dialog label {
     display: block;
+}
+
+#mock-dialog .padded-cell {
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+#responseText {
+    width: 100%;
+    height: 300px;
+}
+
+#mock-dialog button {
+    padding: 1em 3em;
+    margin-right: 2em;
 }
